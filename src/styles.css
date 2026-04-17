@@ -1,1 +1,81 @@
-body { margin: 0; font-family: system-ui, sans-serif; }
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(1200px 800px at 50% 40%, #1a1b2e 0%, #0b0b10 70%);
+  color: #e6e6ee;
+  min-height: 100vh;
+}
+
+.demo {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  place-items: center;
+  padding: 48px 24px;
+  gap: 8px;
+  color: inherit;
+}
+
+.demo__title {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: 28px;
+}
+
+.demo__hint {
+  margin: 0;
+  color: #9aa0b4;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.demo__stage {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.demo-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  opacity: 0.72;
+  transition: opacity 300ms ease, transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.demo-card--active {
+  opacity: 1;
+  transform: scale(1.08);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
+.demo-card__label {
+  position: absolute;
+  inset: auto 12px 12px 12px;
+  background: rgba(10, 10, 18, 0.45);
+  backdrop-filter: blur(6px);
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.demo-card__label h3 {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.demo-card__label p {
+  margin: 0;
+  font-size: 11px;
+  color: #c7cbe0;
+}
