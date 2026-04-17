@@ -128,4 +128,29 @@ describe('useRingRotation', () => {
     expect(result.current.activeIndex).toBe(0);
     expect(preventDefault).not.toHaveBeenCalled();
   });
+
+  it('does not call onActiveChange on mount', () => {
+    const onActiveChange = vi.fn();
+    renderHook(() => useRingRotation(6, { onActiveChange, startIndex: 2 }));
+    expect(onActiveChange).not.toHaveBeenCalled();
+  });
+
+  it('does not call onActiveChange when goTo targets the current index', () => {
+    const onActiveChange = vi.fn();
+    const { result } = renderHook(() =>
+      useRingRotation(6, { onActiveChange, startIndex: 2 }),
+    );
+    act(() => result.current.goTo(2));
+    expect(onActiveChange).not.toHaveBeenCalled();
+  });
+
+  it('goTo ignores out-of-range targets', () => {
+    const { result } = renderHook(() => useRingRotation(6, { startIndex: 3 }));
+    act(() => result.current.goTo(-1));
+    expect(result.current.activeIndex).toBe(3);
+    act(() => result.current.goTo(6));
+    expect(result.current.activeIndex).toBe(3);
+    act(() => result.current.goTo(100));
+    expect(result.current.activeIndex).toBe(3);
+  });
 });

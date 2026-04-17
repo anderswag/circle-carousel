@@ -56,6 +56,7 @@ export function useRingRotation(
   const goTo = useCallback(
     (target: number) => {
       if (itemCount <= 1) return;
+      if (target < 0 || target >= itemCount) return;
       setRotationUnits((r) => {
         const current = mod(r, itemCount);
         let delta = target - current;
@@ -68,10 +69,7 @@ export function useRingRotation(
   );
 
   const home = useCallback(() => goTo(0), [goTo]);
-  const end = useCallback(() => {
-    if (itemCount <= 1) return;
-    goTo(itemCount - 1);
-  }, [goTo, itemCount]);
+  const end = useCallback(() => goTo(itemCount - 1), [goTo, itemCount]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
