@@ -23,6 +23,10 @@ export type CircleCarouselProps<T> = {
 const DEFAULT_RADIUS = 220;
 const DEFAULT_CARD_SIZE = { width: 140, height: 180 };
 
+function mod(n: number, m: number): number {
+  return ((n % m) + m) % m;
+}
+
 export function CircleCarousel<T>({
   items,
   renderCard,
@@ -33,10 +37,8 @@ export function CircleCarousel<T>({
   className,
   ariaLabel = 'Circle carousel',
 }: CircleCarouselProps<T>) {
-  const { activeIndex, rotationUnits, onKeyDown } = useRingRotation(
-    items.length,
-    { startIndex, onActiveChange },
-  );
+  const { activeIndex, rotationUnits, lastDirection, onKeyDown } =
+    useRingRotation(items.length, { startIndex, onActiveChange });
 
   if (
     import.meta.env.DEV &&
@@ -72,6 +74,7 @@ export function CircleCarousel<T>({
   }
 
   const step = 360 / items.length;
+  const N = items.length;
 
   return (
     <div
@@ -87,8 +90,17 @@ export function CircleCarousel<T>({
         {items.map((item, i) => {
           const theta = (i - rotationUnits) * step;
           const isActive = i === activeIndex;
+          // Wave = 0 on mount (no direction yet).
+          // Otherwise: the card leaving the active slot (old active, at
+          // relative = -d mod N) moves first (wave 0), then the wave cascades
+          // in the direction of motion so each card's previous slot is cleared
+          // before the next card arrives.
+          const relative = mod(i - activeIndex, N);
+          const wave =
+            lastDirection === 0 ? 0 : mod(1 + lastDirection * relative, N);
           const cardStyle: CSSProperties = {
             ['--theta' as string]: `${theta}deg`,
+            ['--wave' as string]: `${wave}`,
           };
           return (
             <div

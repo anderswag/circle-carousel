@@ -159,4 +159,60 @@ describe('CircleCarousel', () => {
     expect(screen.getByTestId('card-5').dataset.active).toBe('true');
   });
 
+  it('assigns --wave = 0 to every card on initial mount', () => {
+    const { container } = render(
+      <CircleCarousel items={items} renderCard={renderCard} />,
+    );
+    container
+      .querySelectorAll<HTMLElement>('.circle-carousel__card')
+      .forEach((el) => {
+        expect(el.style.getPropertyValue('--wave')).toBe('0');
+      });
+  });
+
+  it('old active leads the wave after ArrowDown (no overlap order)', async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <CircleCarousel items={items} renderCard={renderCard} />,
+    );
+    screen.getByRole('listbox').focus();
+    await user.keyboard('{ArrowDown}');
+    // After ↓ on 6-item ring: activeIndex=1, lastDirection=+1.
+    // Wave formula: mod(1 + d*relative, N). Expected:
+    // card 0 (old active, relative=5) → wave=mod(1+5,6)=0 (moves first)
+    // card 1 (new active, relative=0) → wave=1
+    // card 2 (relative=1) → wave=2
+    // card 3 → 3, card 4 → 4, card 5 → 5
+    const cards = container.querySelectorAll<HTMLElement>(
+      '.circle-carousel__card',
+    );
+    const expected = [0, 1, 2, 3, 4, 5];
+    cards.forEach((el, i) => {
+      expect(el.style.getPropertyValue('--wave')).toBe(`${expected[i]}`);
+    });
+  });
+
+  it('old active leads the wave after ArrowUp (reversed cascade)', async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <CircleCarousel items={items} renderCard={renderCard} />,
+    );
+    screen.getByRole('listbox').focus();
+    await user.keyboard('{ArrowUp}');
+    // After ↑ on 6-item ring: activeIndex=5, lastDirection=-1.
+    // card 0 (old active, relative=mod(0-5,6)=1) → wave=mod(1-1,6)=0 (moves first)
+    // card 5 (new active, relative=0) → wave=mod(1-0,6)=1
+    // card 4 (relative=mod(4-5,6)=5) → wave=mod(1-5,6)=2
+    // card 3 (relative=4) → wave=mod(1-4,6)=3
+    // card 2 (relative=3) → wave=mod(1-3,6)=4
+    // card 1 (relative=2) → wave=mod(1-2,6)=5
+    const cards = container.querySelectorAll<HTMLElement>(
+      '.circle-carousel__card',
+    );
+    const expected = [0, 5, 4, 3, 2, 1];
+    cards.forEach((el, i) => {
+      expect(el.style.getPropertyValue('--wave')).toBe(`${expected[i]}`);
+    });
+  });
+
 });

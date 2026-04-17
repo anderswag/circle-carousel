@@ -154,4 +154,37 @@ describe('useRingRotation', () => {
     expect(result.current.activeIndex).toBe(3);
   });
 
+  it('lastDirection is 0 on mount', () => {
+    const { result } = renderHook(() => useRingRotation(6));
+    expect(result.current.lastDirection).toBe(0);
+  });
+
+  it('lastDirection becomes +1 after next()', () => {
+    const { result } = renderHook(() => useRingRotation(6));
+    act(() => result.current.next());
+    expect(result.current.lastDirection).toBe(1);
+  });
+
+  it('lastDirection becomes -1 after prev()', () => {
+    const { result } = renderHook(() => useRingRotation(6));
+    act(() => result.current.prev());
+    expect(result.current.lastDirection).toBe(-1);
+  });
+
+  it('lastDirection reflects shortest-path sign for goTo', () => {
+    const { result } = renderHook(() => useRingRotation(8, { startIndex: 1 }));
+    act(() => result.current.goTo(3));
+    expect(result.current.lastDirection).toBe(1);
+    act(() => result.current.goTo(2));
+    expect(result.current.lastDirection).toBe(-1);
+  });
+
+  it('lastDirection is unchanged on no-op goTo', () => {
+    const { result } = renderHook(() => useRingRotation(6, { startIndex: 2 }));
+    act(() => result.current.next());
+    expect(result.current.lastDirection).toBe(1);
+    act(() => result.current.goTo(3));
+    act(() => result.current.goTo(3));
+    expect(result.current.lastDirection).toBe(1);
+  });
 });

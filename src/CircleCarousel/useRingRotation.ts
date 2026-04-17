@@ -6,9 +6,12 @@ export type UseRingRotationOptions = {
   onActiveChange?: (index: number) => void;
 };
 
+export type RotationDirection = -1 | 0 | 1;
+
 export type UseRingRotationResult = {
   activeIndex: number;
   rotationUnits: number;
+  lastDirection: RotationDirection;
   next: () => void;
   prev: () => void;
   goTo: (index: number) => void;
@@ -27,6 +30,7 @@ export function useRingRotation(
 ): UseRingRotationResult {
   const { startIndex = 0, onActiveChange } = options;
   const [rotationUnits, setRotationUnits] = useState(startIndex);
+  const [lastDirection, setLastDirection] = useState<RotationDirection>(0);
 
   const activeIndex = itemCount > 0 ? mod(rotationUnits, itemCount) : 0;
 
@@ -46,11 +50,13 @@ export function useRingRotation(
   const next = useCallback(() => {
     if (itemCount <= 1) return;
     setRotationUnits((r) => r + 1);
+    setLastDirection(1);
   }, [itemCount]);
 
   const prev = useCallback(() => {
     if (itemCount <= 1) return;
     setRotationUnits((r) => r - 1);
+    setLastDirection(-1);
   }, [itemCount]);
 
   const goTo = useCallback(
@@ -62,6 +68,9 @@ export function useRingRotation(
         let delta = target - current;
         if (delta > itemCount / 2) delta -= itemCount;
         else if (delta < -itemCount / 2) delta += itemCount;
+        if (delta !== 0) {
+          setLastDirection(delta > 0 ? 1 : -1);
+        }
         return r + delta;
       });
     },
@@ -98,6 +107,7 @@ export function useRingRotation(
   return {
     activeIndex,
     rotationUnits,
+    lastDirection,
     next,
     prev,
     goTo,
