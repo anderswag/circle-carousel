@@ -38,6 +38,16 @@ export function CircleCarousel<T>({
     { startIndex, onActiveChange },
   );
 
+  if (
+    import.meta.env.DEV &&
+    items.length > 0 &&
+    (items.length < 4 || items.length > 12)
+  ) {
+    console.warn(
+      `CircleCarousel: ${items.length} items is outside the recommended 4–12 range.`,
+    );
+  }
+
   const baseId = useId();
   const optionId = (i: number) => `${baseId}-option-${i}`;
 

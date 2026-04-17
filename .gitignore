@@ -4,3 +4,11 @@ dist
 .DS_Store
 *.log
 coverage
+
+# TypeScript build artifacts
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# Local Claude Code settings
+.claude/
