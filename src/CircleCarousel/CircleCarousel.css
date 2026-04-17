@@ -24,7 +24,6 @@
   height: var(--cc-card-h);
   transform: translate(-50%, -50%) rotate(var(--theta)) translateX(var(--cc-radius));
   transition: transform 350ms cubic-bezier(0.22, 0.8, 0.36, 1);
-  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -121,4 +121,41 @@ describe('CircleCarousel', () => {
       'Project ring',
     );
   });
+
+  it('updates --theta values after ArrowDown navigation', async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <CircleCarousel items={items} renderCard={renderCard} />,
+    );
+    screen.getByRole('listbox').focus();
+    await user.keyboard('{ArrowDown}');
+    const step = 360 / items.length;
+    const cards = container.querySelectorAll<HTMLElement>(
+      '.circle-carousel__card',
+    );
+    // rotationUnits is now 1; item 1 should have theta=0
+    expect(cards[1].style.getPropertyValue('--theta')).toBe('0deg');
+    // item 0 should have moved back by one step
+    expect(cards[0].style.getPropertyValue('--theta')).toBe(`${-step}deg`);
+  });
+
+  it('updates aria-activedescendant after navigation', async () => {
+    const user = userEvent.setup();
+    render(<CircleCarousel items={items} renderCard={renderCard} />);
+    const listbox = screen.getByRole('listbox');
+    listbox.focus();
+    await user.keyboard('{ArrowDown}');
+    const activeId = listbox.getAttribute('aria-activedescendant');
+    const activeOption = document.getElementById(activeId!);
+    expect(activeOption).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByTestId('card-1').dataset.active).toBe('true');
+  });
+
+  it('End key jumps to last item', async () => {
+    const user = userEvent.setup();
+    render(<CircleCarousel items={items} renderCard={renderCard} />);
+    screen.getByRole('listbox').focus();
+    await user.keyboard('{End}');
+    expect(screen.getByTestId('card-5').dataset.active).toBe('true');
+  });
 });
