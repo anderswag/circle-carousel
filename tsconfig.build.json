@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": false,
+    "outDir": "dist"
+  },
+  "include": ["src/CircleCarousel"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
+}
