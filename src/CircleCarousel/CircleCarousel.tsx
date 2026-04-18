@@ -20,8 +20,8 @@ export type CircleCarouselProps<T> = {
   ariaLabel?: string;
 };
 
-const DEFAULT_RADIUS = 220;
-const DEFAULT_CARD_SIZE = { width: 140, height: 180 };
+const DEFAULT_RADIUS = 300;
+const DEFAULT_CARD_SIZE = { width: 250, height: 153 };
 
 function mod(n: number, m: number): number {
   return ((n % m) + m) % m;

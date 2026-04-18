@@ -16,6 +16,16 @@ const demoItems: DemoItem[] = [
   { id: 5, title: 'Hollow',    description: 'Resonant void',    gradient: 'linear-gradient(135deg, #10b981, #0ea5e9)' },
   { id: 6, title: 'Tessera',   description: 'Small mosaics',    gradient: 'linear-gradient(135deg, #e879f9, #8b5cf6)' },
   { id: 7, title: 'Cinder',    description: 'What remains',     gradient: 'linear-gradient(135deg, #f97316, #facc15)' },
+  { id: 8, title: 'Lumen',     description: 'Measured light',   gradient: 'linear-gradient(135deg, #06b6d4, #a855f7)' },
+  { id: 9, title: 'Basalt',    description: 'Volcanic stone',   gradient: 'linear-gradient(135deg, #64748b, #0f172a)' },
+  { id: 10, title: 'Sable',    description: 'Deep shadow',      gradient: 'linear-gradient(135deg, #1e293b, #7c3aed)' },
+  // { id: 11, title: 'Verdant',  description: 'Lush expanse',     gradient: 'linear-gradient(135deg, #22c55e, #84cc16)' },
+  // { id: 12, title: 'Halcyon',  description: 'Calm days',        gradient: 'linear-gradient(135deg, #38bdf8, #c084fc)' },
+  // { id: 13, title: 'Marrow',   description: 'Core essence',     gradient: 'linear-gradient(135deg, #dc2626, #7f1d1d)' },
+  // { id: 14, title: 'Zephyr',   description: 'Gentle wind',      gradient: 'linear-gradient(135deg, #67e8f9, #bef264)' },
+  // { id: 15, title: 'Opal',     description: 'Shifting hues',    gradient: 'linear-gradient(135deg, #fda4af, #a5f3fc)' },
+  // { id: 16, title: 'Thorn',    description: 'Sharpened edge',   gradient: 'linear-gradient(135deg, #166534, #365314)' },
+  // { id: 17, title: 'Vellum',   description: 'Aged parchment',   gradient: 'linear-gradient(135deg, #fef3c7, #fca5a5)' },
 ];
 
 export function App() {
